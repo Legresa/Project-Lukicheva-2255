@@ -1,0 +1,86 @@
+CREATE TABLE USERS(
+	id SERIAL PRIMARY KEY,
+	login VARCHAR(128) NOT NULL,
+	hesh_of_password INTEGER NOT NULL,
+	e-mail VARCHAR(128) NOT NULL,
+	roots BOOl)
+	
+CREATE TABLE COMPANY(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	description VARCHAR(99999) NOT NULL)
+	
+CREATE TABLE COMPANY_REPORTS(
+	id SERIAL PRIMARY KEY,
+	id_company INTEGER NOT NULL REFERENCES COMPANY(id),
+	report VARCHAR(99999) NOT NULL)
+	
+CREATE TABLE ticker(
+	id SERIAL PRIMARY KEY,
+	name_of_ticker VARCHAR(255) NOT NULL,
+	description VARCHAR(1028) NOT NULL,
+	what_kind_of_ticker VARCHAR(64) NOT NULL)
+	
+CREATE TABLE kotirovki(
+	id SERIAL PRIMARY KEY,
+	id_ticker INTEGER NOT NULL REFERENCES ticker(id),
+	date_time TIMESTAMP NOT NULL,
+	cost NUMERIC(99, 2) NOT NULL)
+	
+CREATE TABLE user_parametrs(
+	id SERIAL PRIMARY KEY,
+	id_user INTEGER NOT NULL REFERENCES USERS(id),
+	id_ticker INTEGER NOT NULL REFERENCES ticker(id),
+	date_time TIMESTAMP NOT NULL,
+	amount INTEGER NOT NULL,
+	buy_or_sell BOOL)
+	
+--1--
+INSERT INTO USERS(login, hesh_of_password, e-mail, roots)
+VALUES ('SuperMinecrafter2012', (результат работы шифровальщика), 'MegaKrutoyTankist2015@mail.ru', false)
+
+--3--
+INSERT INTO kotirovki(id_ticker, date_time, cost)
+VALUES (<от 0 до n-го>, NOW(), 120)
+
+--4--
+SELECT kk1.cost - kk2.cost
+FROM kotirovki kk1, kotirovki kk2
+WHERE kk1.date_time = '2021-05-30 15:14:00' AND kk2.date_time = '2021-05-31 15:14:00' AND kk1 = kk2 AND kk2 = (SELECT id
+																											  FROM ticker
+																											  WHERE name_of_ticker = 'Газпром')
+
+--8--
+SELECT *
+FROM ticker t
+WHERE t.name_of_ticker = 'Газпром'
+
+(+ запрос из 4го пункта)
+
+SELECT *
+FROM COMPANY
+WHERE name = 'Газпром'
+
+SELECT *
+FROM COMPANY_REPORTS
+WHERE id_company = (SELECT id FROM COMPANY WHERE name = 'Газпром')
+
+--9--
+SELECT *
+FROM COMPANY
+WHERE name = (SELECT name_of_ticker FROM ticker WHERE cost = 3000)
+
+--10--
+SELECT *
+FROM user_parametrs
+WHERE id_user = (SELECT id FROM USERS WHERE name = 'Олег')
+
+--11--
+SELECT *
+FROM user_parametrs
+WHERE id_user = (SELECT id FROM USERS WHERE name = 'Олег') AND buy_or_sell = true
+
+!true - купил false - продал!
+
+--12--
+(см. пункт 10)
