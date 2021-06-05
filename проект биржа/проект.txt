@@ -46,9 +46,11 @@ VALUES (<от 0 до n-го>, NOW(), 120)
 --4--
 SELECT kk1.cost - kk2.cost
 FROM kotirovki kk1, kotirovki kk2
-WHERE kk1.date_time = '2021-05-30 15:14:00' AND kk2.date_time = '2021-05-31 15:14:00' AND kk1 = kk2 AND kk2 = (SELECT id
-																											  FROM ticker
-																											  WHERE name_of_ticker = 'Газпром')
+WHERE kk1.date_time = '2021-05-30 15:14:00' AND kk2.date_time = '2021-05-31 15:14:00' AND kk1 = kk2 AND kk2 = (SELECT id FROM ticker WHERE name_of_ticker - 'Газпром')
+--5--
+INSERT INTO ticker(name_of_ticker, description, what_kind_of_ticket)
+VALUES ('Золото', 'Золотое золото', 'Драгоценные металлы')																											  
+																											  
 
 --8--
 SELECT *
@@ -57,27 +59,22 @@ WHERE t.name_of_ticker = 'Газпром'
 
 (+ запрос из 4го пункта)
 
-SELECT *
-FROM COMPANY
+SELECT * FROM COMPANY
 WHERE name = 'Газпром'
 
-SELECT *
-FROM COMPANY_REPORTS
+SELECT * FROM COMPANY_REPORTS
 WHERE id_company = (SELECT id FROM COMPANY WHERE name = 'Газпром')
 
 --9--
-SELECT *
-FROM COMPANY
+SELECT * FROM COMPANY
 WHERE name = (SELECT name_of_ticker FROM ticker WHERE cost = 3000)
 
 --10--
-SELECT *
-FROM user_parametrs
+SELECT * FROM user_parametrs
 WHERE id_user = (SELECT id FROM USERS WHERE name = 'Олег')
 
 --11--
-SELECT *
-FROM user_parametrs
+SELECT * FROM user_parametrs
 WHERE id_user = (SELECT id FROM USERS WHERE name = 'Олег') AND buy_or_sell = true
 
 !true - купил false - продал!
